@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechShop - Your Electronics Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        nav {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #3498db;
+        }
+
+        .cart-badge {
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #229954;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: #ecf0f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+
+        .product-info p {
+            color: #7f8c8d;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #27ae60;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        /* Cart */
+        .cart-item {
+            background: white;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .quantity-control {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            background: #ecf0f1;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .quantity-btn:hover {
+            background: #bdc3c7;
+        }
+
+        .cart-summary {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .cart-summary h2 {
+            margin-bottom: 1rem;
+        }
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .summary-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin-top: 1rem;
+        }
+
+        /* Checkout Form */
+        .checkout-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .success-message h2 {
+            margin-bottom: 1rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #7f8c8d;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 1rem;
+        }
+
+        /* Purchase Page */
+        .purchase-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .purchase-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .purchase-image {
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10rem;
+            min-height: 400px;
+        }
+
+        .purchase-details h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .purchase-price {
+            font-size: 2.5rem;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 1.5rem 0;
+        }
+
+        .purchase-description {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .purchase-features {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .purchase-features h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .purchase-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .purchase-features li {
+            padding: 0.5rem 0;
+            color: #555;
+        }
+
+        .purchase-features li:before {
+            content: "✓ ";
+            color: #27ae60;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-selector label {
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ecf0f1;
+            padding: 0.5rem;
+            border-radius: 8px;
+        }
+
+        .quantity-input button {
+            background: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .quantity-input button:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .quantity-input input {
+            width: 60px;
+            text-align: center;
+            border: none;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .purchase-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .purchase-actions .btn {
+            flex: 1;
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .back-to-products {
+            display: inline-block;
+            margin: 2rem 0 1rem;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-to-products:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .purchase-content {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+
+            .purchase-image {
+                min-height: 250px;
+                font-size: 6rem;
+            }
+
+            .purchase-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">🛒 TechShop</div>
+            <ul>
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('products')">Products</a></li>
+                <li><a href="#" onclick="showPage('cart')">Cart <span class="cart-badge" id="cartCount">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="container">
+            <div class="hero">
+                <h1>Welcome to TechShop</h1>
+                <p>Your one-stop shop for the latest electronics and gadgets</p>
+                <a href="#" onclick="showPage('products')" class="btn">Shop Now</a>
+            </div>
+            
+            <h2 style="text-align: center; margin: 3rem 0 2rem;">Featured Categories</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">💻</div>
+                    <div class="product-info">
+                        <h3>Laptops</h3>
+                        <p>High-performance laptops for work and gaming</p>
+                        <a href="#" onclick="showPage('products')" class="btn">Browse</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">📱</div>
+                    <div class="product-info">
+                        <h3>Smartphones</h3>
+                        <p>Latest smartphones with cutting-edge technology</p>
+                        <a href="#" onclick="showPage('products')" class="btn">Browse</a>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">🎧</div>
+                    <div class="product-info">
+                        <h3>Accessories</h3>
+                        <p>Premium accessories for your devices</p>
+                        <a href="#" onclick="showPage('products')" class="btn">Browse</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Page -->
+    <div id="products" class="page">
+        <div class="container">
+            <h1>Our Products</h1>
+            <div class="products-grid" id="productsContainer"></div>
+        </div>
+    </div>
+
+    <!-- Purchase/Product Details Page -->
+    <div id="purchase" class="page">
+        <div class="container">
+            <a href="#" onclick="showPage('products')" class="back-to-products">← Back to Products</a>
+            <div class="purchase-container" id="purchaseContainer"></div>
+        </div>
+    </div>
+
+    <!-- Cart Page -->
+    <div id="cart" class="page">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+            <div id="cartContainer"></div>
+            <div id="cartSummary"></div>
+        </div>
+    </div>
+
+    <!-- Checkout Page -->
+    <div id="checkout" class="page">
+        <div class="container">
+            <h1 style="text-align: center; margin-bottom: 2rem;">Checkout</h1>
+            <div class="checkout-form">
+                <h2>Shipping Information</h2>
+                <form id="checkoutForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" name="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" name="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label>ZIP Code</label>
+                            <input type="text" name="zip" required>
+                        </div>
+                    </div>
+                    
+                    <h2 style="margin-top: 2rem;">Payment Information</h2>
+                    
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" name="cardNumber" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" name="expiry" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" name="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                    
+                    <div id="checkoutSummary" style="margin: 2rem 0;"></div>
+                    
+                    <button type="submit" class="btn btn-success" style="width: 100%; padding: 15px; font-size: 1.1rem;">
+                        Complete Purchase
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Page -->
+    <div id="success" class="page">
+        <div class="container">
+            <div class="success-message">
+                <h1 style="font-size: 3rem;">✅</h1>
+                <h2>Order Confirmed!</h2>
+                <p>Thank you for your purchase. Your order has been successfully placed.</p>
+                <p>Order confirmation has been sent to your email.</p>
+                <button onclick="showPage('home'); resetCart();" class="btn" style="margin-top: 2rem;">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Products Database
+        const products = [
+            { 
+                id: 1, 
+                name: 'MacBook Pro', 
+                price: 1999, 
+                emoji: '💻', 
+                description: 'Powerful laptop for professionals',
+                longDescription: 'Experience unparalleled performance with the MacBook Pro. Featuring the latest M3 chip, stunning Retina display, and all-day battery life. Perfect for developers, designers, and creative professionals.',
+                features: ['M3 Pro chip for lightning-fast performance', '16GB unified memory', '512GB SSD storage', '14-inch Liquid Retina XDR display', 'Up to 18 hours battery life', 'Three Thunderbolt 4 ports']
+            },
+            { 
+                id: 2, 
+                name: 'iPhone 15', 
+                price: 999, 
+                emoji: '📱', 
+                description: 'Latest smartphone with advanced features',
+                longDescription: 'The iPhone 15 brings you Dynamic Island, a 48MP camera system, and the powerful A17 chip. Capture stunning photos, enjoy all-day battery life, and experience the smoothest performance.',
+                features: ['A17 Bionic chip', '48MP Main camera', 'Dynamic Island', 'All-day battery life', 'USB-C charging', 'Ceramic Shield front']
+            },
+            { 
+                id: 3, 
+                name: 'AirPods Pro', 
+                price: 249, 
+                emoji: '🎧', 
+                description: 'Premium wireless earbuds',
+                longDescription: 'Immerse yourself in rich, high-quality audio with adaptive audio technology. Active noise cancellation blocks out the world, while transparency mode lets you hear what you need to.',
+                features: ['Active Noise Cancellation', 'Adaptive Audio', 'Personalized Spatial Audio', 'Up to 6 hours listening time', 'MagSafe charging case', 'Sweat and water resistant']
+            },
+            { 
+                id: 4, 
+                name: 'iPad Air', 
+                price: 599, 
+                emoji: '📱', 
+                description: 'Versatile tablet for work and play',
+                longDescription: 'The iPad Air delivers serious performance in a gorgeous, portable design. With the M1 chip and stunning display, it\'s perfect for creativity, productivity, and entertainment.',
+                features: ['M1 chip performance', '10.9-inch Liquid Retina display', 'Works with Apple Pencil', 'Touch ID security', 'Up to 10 hours battery', 'Ultra-fast 5G connectivity']
+            },
+            { 
+                id: 5, 
+                name: 'Apple Watch', 
+                price: 399, 
+                emoji: '⌚', 
+                description: 'Smart watch with health tracking',
+                longDescription: 'Stay connected and healthy with Apple Watch. Track your workouts, monitor your heart health, and stay in touch with calls, messages, and notifications right from your wrist.',
+                features: ['Advanced health monitoring', 'ECG and heart rate tracking', 'Sleep tracking', 'Water resistant 50m', 'Always-On Retina display', 'Crash and fall detection']
+            },
+            { 
+                id: 6, 
+                name: 'Magic Keyboard', 
+                price: 149, 
+                emoji: '⌨️', 
+                description: 'Wireless keyboard with numeric keypad',
+                longDescription: 'The Magic Keyboard combines a sleek design with a rechargeable battery and enhanced key travel. The numeric keypad makes it perfect for spreadsheets and finance applications.',
+                features: ['Wireless Bluetooth connectivity', 'Rechargeable battery', 'Numeric keypad', 'Optimized key travel', 'Stable scissor mechanism', 'Compatible with Mac and iPad']
+            },
+            { 
+                id: 7, 
+                name: 'Monitor 4K', 
+                price: 699, 
+                emoji: '🖥️', 
+                description: 'Ultra HD display for professionals',
+                longDescription: 'Experience stunning clarity with this 4K Ultra HD monitor. With HDR support, wide color gamut, and ergonomic design, it\'s perfect for creative professionals and power users.',
+                features: ['4K Ultra HD resolution', 'HDR10 support', '27-inch display', '99% sRGB color accuracy', 'USB-C connectivity', 'Height adjustable stand']
+            },
+            { 
+                id: 8, 
+                name: 'Webcam HD', 
+                price: 129, 
+                emoji: '📷', 
+                description: 'High-definition webcam for video calls',
+                longDescription: 'Look your best on every video call with this 1080p HD webcam. Features auto-focus, light correction, and works seamlessly with all major video conferencing platforms.',
+                features: ['1080p Full HD video', 'Auto-focus technology', 'Built-in dual microphones', 'Light correction', 'Universal clip mount', 'Wide 90° field of view']
+            },
+            { 
+                id: 9, 
+                name: 'USB-C Hub', 
+                price: 79, 
+                emoji: '🔌', 
+                description: 'Multi-port adapter for connectivity',
+                longDescription: 'Expand your connectivity with this premium USB-C hub. Features multiple ports including HDMI, USB-A, SD card reader, and more. Compact and portable design.',
+                features: ['7-in-1 connectivity', '4K HDMI output', '3 USB 3.0 ports', 'SD and microSD card readers', '100W Power Delivery', 'Aluminum construction']
+            }
+        ];
+
+        // Cart Management
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        // Initialize
+        function init() {
+            renderProducts();
+            updateCartCount();
+            renderCart();
+        }
+
+        // Page Navigation
+        function showPage(pageName) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageName).classList.add('active');
+            
+            if (pageName === 'cart') {
+                renderCart();
+            } else if (pageName === 'checkout') {
+                renderCheckoutSummary();
+            }
+        }
+
+        // Render Products
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.emoji}</div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                        <div class="product-price">$${product.price}</div>
+                        <button onclick="showPurchasePage(${product.id})" class="btn">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add to Cart
+        function addToCart(productId, quantity = 1) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...product, quantity: quantity });
+            }
+            
+            saveCart();
+            updateCartCount();
+            return product;
+        }
+
+        // Show Purchase Page
+        function showPurchasePage(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            const container = document.getElementById('purchaseContainer');
+            container.innerHTML = `
+                <div class="purchase-content">
+                    <div class="purchase-image">${product.emoji}</div>
+                    <div class="purchase-details">
+                        <h1>${product.name}</h1>
+                        <div class="purchase-price">$${product.price}</div>
+                        <div class="purchase-description">
+                            ${product.longDescription}
+                        </div>
+                        
+                        <div class="purchase-features">
+                            <h3>Key Features</h3>
+                            <ul>
+                                ${product.features.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="quantity-selector">
+                            <label>Quantity:</label>
+                            <div class="quantity-input">
+                                <button onclick="adjustPurchaseQuantity(-1)">-</button>
+                                <input type="number" id="purchaseQuantity" value="1" min="1" max="10" readonly>
+                                <button onclick="adjustPurchaseQuantity(1)">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="purchase-actions">
+                            <button onclick="addToCartFromPurchase(${product.id})" class="btn btn-success">
+                                Add to Cart
+                            </button>
+                            <button onclick="buyNow(${product.id})" class="btn">
+                                Buy Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            showPage('purchase');
+        }
+
+        // Adjust Purchase Quantity
+        function adjustPurchaseQuantity(change) {
+            const input = document.getElementById('purchaseQuantity');
+            let value = parseInt(input.value) + change;
+            if (value < 1) value = 1;
+            if (value > 10) value = 10;
+            input.value = value;
+        }
+
+        // Add to Cart from Purchase Page
+        function addToCartFromPurchase(productId) {
+            const quantity = parseInt(document.getElementById('purchaseQuantity').value);
+            const product = addToCart(productId, quantity);
+            alert(`${quantity} x ${product.name} added to cart!`);
+            showPage('products');
+        }
+
+        // Buy Now - Add to cart and go directly to checkout
+        function buyNow(productId) {
+            const quantity = parseInt(document.getElementById('purchaseQuantity').value);
+            addToCart(productId, quantity);
+            showPage('checkout');
+        }
+
+        // Update Cart Count
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Render Cart
+        function renderCart() {
+            const container = document.getElementById('cartContainer');
+            const summaryContainer = document.getElementById('cartSummary');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>Your cart is empty</h2>
+                        <p>Add some products to get started!</p>
+                        <button onclick="showPage('products')" class="btn">Browse Products</button>
+                    </div>
+                `;
+                summaryContainer.innerHTML = '';
+                return;
+            }
+            
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h3>${item.emoji} ${item.name}</h3>
+                        <p>$${item.price} each</p>
+                    </div>
+                    <div class="cart-item-controls">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span style="min-width: 30px; text-align: center;">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
+                        <button onclick="removeFromCart(${item.id})" class="btn btn-danger">Remove</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+            
+            summaryContainer.innerHTML = `
+                <div class="cart-summary">
+                    <h2>Order Summary</h2>
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Tax (10%):</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-line summary-total">
+                        <span>Total:</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                    <button onclick="showPage('checkout')" class="btn btn-success" style="width: 100%; margin-top: 1rem; padding: 15px;">
+                        Proceed to Checkout
+                    </button>
+                </div>
+            `;
+        }
+
+        // Update Quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    saveCart();
+                    updateCartCount();
+                    renderCart();
+                }
+            }
+        }
+
+        // Remove from Cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartCount();
+            renderCart();
+        }
+
+        // Save Cart
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        // Render Checkout Summary
+        function renderCheckoutSummary() {
+            const summaryContainer = document.getElementById('checkoutSummary');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+            
+            summaryContainer.innerHTML = `
+                <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                    <h3>Order Summary</h3>
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span>$${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Tax:</span>
+                        <span>$${tax.toFixed(2)}</span>
+                    </div>
+                    <div class="summary-line" style="font-weight: bold; font-size: 1.2rem; color: #27ae60;">
+                        <span>Total:</span>
+                        <span>$${total.toFixed(2)}</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle Checkout Form
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            showPage('success');
+        });
+
+        // Reset Cart
+        function resetCart() {
+            cart = [];
+            saveCart();
+            updateCartCount();
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
